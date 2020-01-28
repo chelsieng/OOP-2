@@ -105,7 +105,11 @@ public class Appliance {
 
     }
 
+    //Display the information of all appliances
+//    public static
+
     public static void main(String[] args) {
+        //Declaring variables
         int passwordCount = 0;
         int choice = 0;
         int applianceCount = 0;
@@ -118,6 +122,10 @@ public class Appliance {
         String brand = null;
         String type = null;
         double price = 0;
+       // Welcome message
+        System.out.println("___________________________________________________________________");
+        System.out.println("\n\t\t\t  WELCOME TO CHELSIE'S APPLIANCE TRACKER");
+        System.out.println("___________________________________________________________________");
         System.out.println("Please enter the maximum number of appliances: ");
         Scanner userInput = new Scanner(System.in);
         int maxAppliances = userInput.nextInt();
@@ -278,6 +286,10 @@ public class Appliance {
                     break;
                 }
             }
+        }
+
+        while (choice == 3) {
+
         }
 
 
