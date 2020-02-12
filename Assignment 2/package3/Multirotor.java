@@ -40,7 +40,7 @@ public class Multirotor extends Helicopter {
 
     //Displaying description and information of multirotor
     public String toString() {
-        return "This multirotor is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0 and has a horse power of " + horsePower + " watt. It has " + numOfCylinders + " cylinders, " + numOfRotors + " rotors and can hold up to " + passengerCapacity + " passengers.";
+        return "This multirotor is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0 and has " + horsePower + "hp. It has " + numOfCylinders + " set of cylinders, " + numOfRotors + " rotors and can hold up to " + passengerCapacity + " passengers.";
     }
 
     public boolean equals(Object object) {

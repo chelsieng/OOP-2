@@ -54,7 +54,7 @@ public class Airplane {
 
     //Displaying description and information of airplane
     public String toString() {
-        return "This airplane is manufactured by " + brand + ". It costs $" + price + "0 and has a horse power of " + horsePower + " watt.";
+        return "This airplane is manufactured by " + brand + ". It costs $" + price + "0 and has " + horsePower + "hp.";
     }
 
     public boolean equals(Object object) {

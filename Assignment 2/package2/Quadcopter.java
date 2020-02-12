@@ -38,7 +38,7 @@ public class Quadcopter extends Helicopter {
 
     //Displaying description and information of quadcopter
     public String toString() {
-        return "This quadcopter is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0. It has a horse power of " + horsePower + " watt and a maximum flying speed of " + maxFlyingSpeed + " miles per hour. It has " + numOfCylinders + " cylinders and can hold up to " + passengerCapacity + " passengers.";
+        return "This quadcopter is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0. It has " + horsePower + "hp and a maximum flying speed of " + maxFlyingSpeed + " miles per hour. It has " + numOfCylinders + " sets of cylinders and can hold up to " + passengerCapacity + " passengers.";
     }
 
     public boolean equals(Object object) {

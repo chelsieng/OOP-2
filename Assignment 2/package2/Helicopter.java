@@ -61,7 +61,7 @@ public class Helicopter extends Airplane {
 
     //Displaying description and information of helicopter
     public String toString() {
-        return "This helicopter is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0 and has a horse power of " + horsePower + " watt. It has " + numOfCylinders + " cylinders and can hold up to " + passengerCapacity + " passengers.";
+        return "This helicopter is manufactured by " + brand + " and was created in " + creationYear + ". It costs $" + price + "0 and has " + horsePower + "hp. It has " + numOfCylinders + " sets of cylinders and can hold up to " + passengerCapacity + " passengers.";
     }
 
     public boolean equals(Object object) {

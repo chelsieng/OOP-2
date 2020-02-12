@@ -46,9 +46,9 @@ public class MAV extends UAV {
         this.size = size;
     }
 
-    ////Displaying description and information of MAV
+    //Displaying description and information of MAV
     public String toString() {
-        return "This MAV is a " + model + " model. It weighs " + weight + " pounds, and costs $" + price + "0. Its size is " + size + " cm.";
+        return "This MAV is a " + model + " model. It weighs " + weight + " pounds, and costs $" + price + "0. Its size is " + size + " m.";
     }
 
     public boolean equals(Object object) {
