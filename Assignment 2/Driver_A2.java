@@ -73,5 +73,36 @@ public class Driver_A2 {
         System.out.println(mav1.toString());
         System.out.println(mav2.toString());
 
+        //Testing equals() method
+        //Comparing q1 and q2
+        System.out.println("\n----------Testing equals() method----------");
+        Boolean equal = q1.equals(q2);
+        System.out.print("Are Quadcopter q1 and q2 the same? ");
+        if (equal == true){
+            System.out.print("Yes");
+        }
+        else {
+            System.out.print("No");
+        }
+
+        //Comparing a1 and a2
+        equal = a1.equals(a2);
+        System.out.print("\nAre Airplane a1 and a2 the same? ");
+        if (equal == true){
+            System.out.print("Yes");
+        }
+        else {
+            System.out.print("No");
+        }
+
+        //Comparing a3 and uva1
+        equal = a3.equals(uav1);
+        System.out.print("\nAre Airplane a3 and UAV uav1 the same? ");
+        if (equal == true){
+            System.out.print("Yes");
+        }
+        else {
+            System.out.print("No");
+        }
     }
 }
