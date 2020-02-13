@@ -1,6 +1,7 @@
 package package1;
+import package6.FlyingObject;
 
-public class Airplane {
+public class Airplane extends FlyingObject {
     protected String brand;
     protected double price;
     protected int horsePower;
