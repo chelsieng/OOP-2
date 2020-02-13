@@ -106,6 +106,31 @@ public class Driver_A2 {
             System.out.print("No");
         }
 
+        //Creating an array of flying objects
+        FlyingObject [] array = new FlyingObject[15];
+        // Storing airplanes
+        array [0] = a1;
+        array [1] = a2;
+        array [2] = a3;
+        // Storing helicopters
+        array [3] = h1;
+        array [4] = h2;
+        //Storing Quadcopters
+        array [5] = q1;
+        array [6] = q2;
+        //Storing Multirotors
+        array [7] = r1;
+        array [8] = r2;
+        //Storing UAV
+        array [9] = uav1;
+        array [10] = uav2;
+        //Storing Agricultural Drone
+        array [11] = ad1;
+        array [12] = ad2;
+        //Storing MAV
+        array [13] = mav1;
+        array [14] = mav2;
+
 
     }
 }
