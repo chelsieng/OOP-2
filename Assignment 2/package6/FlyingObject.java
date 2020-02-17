@@ -1,5 +1,5 @@
 package package6;
 
-public class FlyingObject {
-
+public abstract class FlyingObject {
+    public abstract double getPrice();
 }

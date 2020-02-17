@@ -31,7 +31,7 @@ public class Driver_A2 {
 
         //Creating Quadcopters
         FlyingObject q1 = new Quadcopter("Dromida", 500, 5, 4, 2014, 4, 30);
-        FlyingObject q2 = new Quadcopter ("Dromida", 500, 5, 4, 2014, 4, 30);
+        FlyingObject q2 = new Quadcopter("Dromida", 500, 5, 4, 2014, 4, 30);
 
         //Displaying info about Quadcopters
         System.out.println("\n----------Quadcopters----------");
@@ -79,58 +79,77 @@ public class Driver_A2 {
         System.out.println("\n----------Testing equals() method----------");
         Boolean equal = q1.equals(q2);
         System.out.print("Are flying object q1 and q2 the same? ");
-        if (equal == true){
+        if (equal == true) {
             System.out.print("Yes");
-        }
-        else {
+        } else {
             System.out.print("No");
         }
 
         //Comparing a1 and a2
         equal = a1.equals(a2);
         System.out.print("\nAre flying object a1 and a2 the same? ");
-        if (equal == true){
+        if (equal == true) {
             System.out.print("Yes");
-        }
-        else {
+        } else {
             System.out.print("No");
         }
 
         //Comparing a3 and uva1
         equal = a3.equals(uav1);
         System.out.print("\nAre flying object a3 and UAV uav1 the same? ");
-        if (equal == true){
+        if (equal == true) {
             System.out.print("Yes");
-        }
-        else {
+        } else {
             System.out.print("No");
         }
 
         //Creating an array of flying objects
-        FlyingObject [] array = new FlyingObject[15];
+        FlyingObject[] array = new FlyingObject[15];
         // Storing airplanes
-        array [0] = a1;
-        array [1] = a2;
-        array [2] = a3;
+        array[0] = a1;
+        array[1] = a2;
+        array[2] = a3;
         // Storing helicopters
-        array [3] = h1;
-        array [4] = h2;
+        array[3] = h1;
+        array[4] = h2;
         //Storing Quadcopters
-        array [5] = q1;
-        array [6] = q2;
+        array[5] = q1;
+        array[6] = q2;
         //Storing Multirotors
-        array [7] = r1;
-        array [8] = r2;
-        //Storing UAV
-        array [9] = uav1;
-        array [10] = uav2;
+        array[7] = r1;
+        array[8] = r2;
+        //Storing UAVs
+        array[9] = uav1;
+        array[10] = uav2;
         //Storing Agricultural Drone
-        array [11] = ad1;
-        array [12] = ad2;
-        //Storing MAV
-        array [13] = mav1;
-        array [14] = mav2;
+        array[11] = ad1;
+        array[12] = ad2;
+        //Storing MAVs
+        array[13] = mav1;
+        array[14] = mav2;
 
+        int min = 0; // index of array of least expensive object
+        int secondMin = 0; // index of array of second least expensive object
+        // Finding first and second least expensive object
+        for (int i = 0; i < array.length; i++) {
+            // if current price is smaller than first min, then change first and second min
+            if (array[i].getPrice() < array[min].getPrice()) {
+                secondMin = min;
+                min = i;
+            }
+            // if current price is between first and second min, then change second min
+            else if (array[i].getPrice() < array[secondMin].getPrice() && array[i].getPrice() != min) {
+                secondMin = i;
+            }
+        }
+        //Displaying first least expensive
+        System.out.println("\n\n----------First least expensive----------");
+        System.out.println("Location (index of array): " + min);
+        System.out.println(array[min].toString());
 
+        //Displaying second least expensive
+        System.out.println("\n----------Second least expensive----------");
+        System.out.println("Location (index of array): " + secondMin);
+        System.out.println(array[secondMin].toString());
     }
 }
