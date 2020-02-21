@@ -1,3 +1,8 @@
+// -----------------------------------------------------
+// Part: 1
+// Written by: Chelsie Ng Man King ID: 40071692
+// -----------------------------------------------------
+
 import package1.Airplane;
 import package2.Helicopter;
 import package2.Quadcopter;
@@ -7,6 +12,10 @@ import package5.AgriculturalDrone;
 import package5.MAV;
 import package6.FlyingObject;
 
+/**
+ * @author Chelsie Ng - 40071692
+ * Driver Class which contains main method that utilizes all classes
+ */
 public class Driver_A2 {
     public static void main(String[] args) {
         //Creating airplanes
@@ -96,7 +105,7 @@ public class Driver_A2 {
 
         //Comparing a3 and uva1
         equal = a3.equals(uav1);
-        System.out.print("\nAre flying object a3 and UAV uav1 the same? ");
+        System.out.print("\nAre flying object a3 and uav1 the same? ");
         if (equal == true) {
             System.out.print("Yes");
         } else {
