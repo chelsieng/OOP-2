@@ -2,7 +2,6 @@
 // Part: 1
 // Written by: Chelsie Ng Man King ID: 40071692
 // -----------------------------------------------------
-
 import package1.Airplane;
 import package2.Helicopter;
 import package2.Quadcopter;
@@ -11,7 +10,6 @@ import package4.UAV;
 import package5.AgriculturalDrone;
 import package5.MAV;
 import package6.FlyingObject;
-
 /**
  * @author Chelsie Ng - 40071692
  * Driver Class which contains main method that utilizes all classes
