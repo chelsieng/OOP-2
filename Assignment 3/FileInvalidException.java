@@ -12,6 +12,7 @@ public class FileInvalidException extends Exception {
 
     /**
      * This is a constructor to pass any different error message
+     *
      * @param message error message
      */
     public FileInvalidException(String message) {
