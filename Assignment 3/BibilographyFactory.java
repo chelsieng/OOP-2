@@ -6,9 +6,9 @@ import java.util.StringTokenizer;
 public class BibilographyFactory {
     public static void processFilesForValidation() {
         String author = "";
-        String authorIEEE = "";
-        String authorACM = "";
-        String authorNJ = "";
+        String authorIEEE = ""; //author in IEEE format
+        String authorACM = ""; //author in ACM format
+        String authorNJ = ""; //author in NJ format
         String journal = "";
         String title = "";
         String year = "";
@@ -20,36 +20,42 @@ public class BibilographyFactory {
         String ISSN = "";
         String month = "";
         StringTokenizer st1 = null;
-        boolean invalid = false;
-        int filecount = 0;
+        int fileCount = 0; //number of files
         PrintWriter pwIEEE = null;
         PrintWriter pwACM = null;
         PrintWriter pwNJ = null;
         Scanner input = null;
+        // Process for 10 files
         for (int i = 1; i < 11; i++) {
+            boolean invalid = false;
+            int ACMcount = 0; //counting number of ACM articles
             File file = new File("Assignment 3/Input Files/Latex" + i + ".bib");
             File IEEFile = new File("Assignment 3/Output Files/IEEE" + i + ".json");
             File ACMFile = new File("Assignment 3/Output Files/ACM" + i + ".json");
             File NJFile = new File("Assignment 3/Output Files/NJ" + i + ".json");
+            // Opening latex file
             try {
                 input = new Scanner(new FileInputStream(file));
             } catch (FileNotFoundException e) {
                 System.out.println("Could not open input file Latex" + i + ".bib for reading. \n\nPlease check if file exists! Program will terminate after closing any opened files.");
-                System.exit(0);
+                System.exit(-1);
             }
+            // Creating/ opening IEEE, ACM and NJ file
             try {
                 pwIEEE = new PrintWriter(new FileOutputStream(IEEFile));
                 pwACM = new PrintWriter(new FileOutputStream(ACMFile));
                 pwNJ = new PrintWriter(new FileOutputStream(NJFile));
             } catch (FileNotFoundException e) {
                 System.out.println("ACM" + i + ".json file could not be opened/created.");
-                System.exit(0);
+                System.exit(-1);
             }
+            //Reading Latex file
             while (input.hasNextLine()) {
                 try {
                     String text = input.nextLine();
                     // End of an article
                     if (text.equals("}")) {
+                        ACMcount++;
                         String[] splitString = author.split("and");
                         for (int j = 0; j < splitString.length; j++) {
                             authorIEEE = splitString[j] + ", ";
@@ -62,22 +68,23 @@ public class BibilographyFactory {
                             pwIEEE.print(authorIEEE);
                             pwNJ.print(authorNJ);
                         }
+                        // writing in IEEE, ACM and NJ format in respective IEEE, ACM and NJ file
                         pwIEEE.println(". \"" + title + "\", " + journal + ", vol. " + volume + ", no. " + number + ", p. " + pages + ", " + month + " " + year + ".\n");
-                        pwACM.println(authorACM + " et al. " + year + ". " + title + ". " + journal + ". " + volume + ", " + number + "(" + year + "), " + pages + ". DOI:https://doi.org/" + doi + ".\n");
+                        pwACM.println("[" + ACMcount + "]\t\t" + authorACM + " et al. " + year + ". " + title + ". " + journal + ". " + volume + ", " + number + "(" + year + "), " + pages + ". DOI:https://doi.org/" + doi + ".\n");
                         pwNJ.println(". " + title + ". " + journal + ". " + volume + ", " + pages + "(" + year + ").\n");
                     }
-                    // if article, continue
                     if (text.contains("@ARTICLE{")) {
                         continue;
                     }
-                    text = text.replace("={", "|");
-                    st1 = new StringTokenizer(text, "|");
+                    text = text.replace("={", "|"); // replacing character "={" with least used character "|"
+                    st1 = new StringTokenizer(text, "|"); // using least used character as delimiter
+                    // Processing each token and storing in corresponding field variable
                     while (st1.hasMoreTokens()) {
                         st1.nextToken();
                         if (text.contains("author|")) {
                             try {
-                                author = st1.nextToken().trim();
-                                author = author.substring(0, author.length() - 2);
+                                author = st1.nextToken().trim(); //removing white spaces
+                                author = author.substring(0, author.length() - 2); //removing "},"
                                 if (author.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -91,8 +98,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("journal|")) {
                             try {
-                                journal = st1.nextToken().trim();
-                                journal = journal.substring(0, journal.length() - 2);
+                                journal = st1.nextToken().trim(); //removing white spaces
+                                journal = journal.substring(0, journal.length() - 2); //removing "},"
                                 if (journal.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -106,8 +113,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("title|")) {
                             try {
-                                title = st1.nextToken().trim();
-                                title = title.substring(0, title.length() - 2);
+                                title = st1.nextToken().trim(); //removing white spaces
+                                title = title.substring(0, title.length() - 2); //removing "},"
                                 if (title.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -121,8 +128,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("year|")) {
                             try {
-                                year = st1.nextToken().trim();
-                                year = year.substring(0, year.length() - 2);
+                                year = st1.nextToken().trim(); //removing white spaces
+                                year = year.substring(0, year.length() - 2); //removing "},"
                                 if (year.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -136,8 +143,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("volume|")) {
                             try {
-                                volume = st1.nextToken().trim();
-                                volume = volume.substring(0, volume.length() - 2);
+                                volume = st1.nextToken().trim(); //removing white spaces
+                                volume = volume.substring(0, volume.length() - 2); //removing "},"
                                 if (volume.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -151,8 +158,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("number|")) {
                             try {
-                                number = st1.nextToken().trim();
-                                number = number.substring(0, number.length() - 2);
+                                number = st1.nextToken().trim(); //removing white spaces
+                                number = number.substring(0, number.length() - 2); //removing "},"
                                 if (number.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -166,8 +173,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("pages|")) {
                             try {
-                                pages = st1.nextToken().trim();
-                                pages = pages.substring(0, pages.length() - 2);
+                                pages = st1.nextToken().trim(); //removing white spaces
+                                pages = pages.substring(0, pages.length() - 2); //removing "},"
                                 if (pages.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -181,8 +188,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("keywords|")) {
                             try {
-                                keywords = st1.nextToken().trim();
-                                keywords = keywords.substring(0, keywords.length() - 2);
+                                keywords = st1.nextToken().trim(); //removing white spaces
+                                keywords = keywords.substring(0, keywords.length() - 2); //removing "},"
                                 if (keywords.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -196,8 +203,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("doi|")) {
                             try {
-                                doi = st1.nextToken().trim();
-                                doi = doi.substring(0, doi.length() - 2);
+                                doi = st1.nextToken().trim(); //removing white spaces
+                                doi = doi.substring(0, doi.length() - 2); //removing "},"
                                 if (doi.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -211,8 +218,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("ISSN|")) {
                             try {
-                                ISSN = st1.nextToken().trim();
-                                ISSN = ISSN.substring(0, ISSN.length() - 2);
+                                ISSN = st1.nextToken().trim(); //removing white spaces
+                                ISSN = ISSN.substring(0, ISSN.length() - 2); //removing "},"
                                 if (ISSN.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -226,8 +233,8 @@ public class BibilographyFactory {
                         }
                         if (text.contains("month|")) {
                             try {
-                                month = st1.nextToken().trim();
-                                month = month.substring(0, month.length() - 2);
+                                month = st1.nextToken().trim(); //removing white spaces
+                                month = month.substring(0, month.length() - 2); //removing "},"
                                 if (month.equals("")) {
                                     throw new NoSuchElementException();
                                 }
@@ -246,18 +253,19 @@ public class BibilographyFactory {
                     ACMFile.delete();
                     NJFile.delete();
                     invalid = true;
-                    filecount++;
+                    fileCount++;
                     break;
                 }
             }
+            //When file is invalid, move on to next file
             if (invalid) {
                 continue;
             }
             pwIEEE.close();
             pwACM.close();
             pwNJ.close();
-        }
-        System.out.println("A total of " + filecount + " files were invalid, and could not be processed. All other " + (10 - filecount) + " \"Valid\" files have been created.");
+        } //eoFor
+        System.out.println("A total of " + fileCount + " files were invalid, and could not be processed. All other " + (10 - fileCount) + " \"Valid\" files have been created.");
     }
 
     public static void main(String[] args) {
@@ -278,11 +286,11 @@ public class BibilographyFactory {
             PrintWriter pwNJ = null;
             //Opening input file
             try {
-                inputStream = new Scanner(inputFile);
+                inputStream = new Scanner(new FileInputStream(inputFile));
                 inputStream.close();
             } catch (FileNotFoundException e) {
                 System.out.println("Could not open input file Latex" + i + ".bib for reading. \n\nPlease check if file exists! Program will terminate after closing any opened files.");
-                System.exit(0);
+                System.exit(-1);
             }
             //Opening or creating IEEE.json file
             try {
@@ -290,7 +298,7 @@ public class BibilographyFactory {
             } catch (FileNotFoundException E) { // when IEEE file cannot be created
                 System.out.println("IEEE" + i + ".json file could not be opened/created.");
                 outputFiles.delete(); //Deleting directory
-                System.exit(0);
+                System.exit(-1);
             }
             //Opening or creating ACM.json file
             try {
@@ -298,7 +306,7 @@ public class BibilographyFactory {
             } catch (FileNotFoundException e) { // when ACM file cannot be created
                 System.out.println("ACM" + i + ".json file could not be opened/created.");
                 outputFiles.delete(); //Deleting directory
-                System.exit(0);
+                System.exit(-1);
             }
             //Opening or creating NJ.json file
             try {
@@ -306,36 +314,49 @@ public class BibilographyFactory {
             } catch (FileNotFoundException e) { // when NJ file cannot be created
                 System.out.println("NJ" + i + ".json file could not be opened/created.");
                 outputFiles.delete(); //Deleting directory
-                System.exit(0);
+                System.exit(-1);
             }
         } //eoFor
         processFilesForValidation();
 
-        //Prompting user
         Scanner userInput = new Scanner(System.in);
         int invalidCount = 0;
         boolean valid = false;
         while (!valid) {
+            //Prompting user to review any file
             System.out.println("\nPlease enter the name of one of the files that you need to review: ");
             String fileName = userInput.nextLine();
             try {
                 BufferedReader reader = new BufferedReader(new FileReader("Assignment 3/Output Files/" + fileName));
-                System.out.println("Here are the contents of the successfully created Jason File: " + fileName);
+                System.out.println("Here are the contents of the successfully created Jason File: " + fileName + "\n");
+                try {
+                    String line = reader.readLine();
+                    while (line != null) {
+                        System.out.println(line);
+                        line = reader.readLine();
+                    }
+                } catch (IOException e) {
+                    System.out.println("Error! Problem reading File. Program will now terminate!");
+                    System.exit(-1);
+                }
+                //Closing message
+                System.out.println("Goodbye! Hope you have enjoyed creating the needed files using BibilographyFactory.");
                 valid = true;
             } catch (FileNotFoundException e) {
                 invalidCount++;
                 System.out.println("Could not open input file. File does not exist; it could possibly not be created!");
+                //No more chances
                 if (invalidCount == 2) {
                     System.out.println("Unfortunately, this was your last chance! Program will now terminate!");
-                    System.exit(0);
+                    System.exit(-1);
 
-                } else {
+                } else { //Second chance for user to review file
                     System.out.println("However, you will be allowed another chance to enter file name.");
                     valid = false;
                 }
             }
         }
-
+        userInput.close();
     }
 }
 
