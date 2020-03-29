@@ -1,47 +1,54 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class BibilographyFactory {
     public static void processFilesForValidation() {
+        String author = "";
+        String authorIEEE = "";
+        String authorACM = "";
+        String authorNJ = "";
+        String journal = "";
+        String title = "";
+        String year = "";
+        String volume = "";
+        String number = "";
+        String pages = "";
+        String keywords = "";
+        String doi = "";
+        String ISSN = "";
+        String month = "";
+        StringTokenizer st1 = null;
+        boolean invalid = false;
+        int filecount = 0;
+        PrintWriter pwIEEE = null;
+        PrintWriter pwACM = null;
+        PrintWriter pwNJ = null;
+        Scanner input = null;
         for (int i = 1; i < 11; i++) {
-            String author = "";
-            String authorIEEE = "";
-            String authorACM = "";
-            String authorNJ = "";
-            String journal = "";
-            String title = "";
-            String year = "";
-            String volume = "";
-            String number = "";
-            String pages = "";
-            String keywords = "";
-            String doi = "";
-            String ISSN = "";
-            String month = "";
-            StringTokenizer st1 = null;
-            int invalid = 0;
-            File outputFiles = new File("Assignment 3/Output Files");
             File file = new File("Assignment 3/Input Files/Latex" + i + ".bib");
             File IEEFile = new File("Assignment 3/Output Files/IEEE" + i + ".json");
             File ACMFile = new File("Assignment 3/Output Files/ACM" + i + ".json");
             File NJFile = new File("Assignment 3/Output Files/NJ" + i + ".json");
-            PrintWriter pwIEEE = null;
-            PrintWriter pwACM = null;
-            PrintWriter pwNJ = null;
-            Scanner input = null;
             try {
-                input = new Scanner(file);
+                input = new Scanner(new FileInputStream(file));
             } catch (FileNotFoundException e) {
                 System.out.println("Could not open input file Latex" + i + ".bib for reading. \n\nPlease check if file exists! Program will terminate after closing any opened files.");
+                System.exit(0);
+            }
+            try {
+                pwIEEE = new PrintWriter(new FileOutputStream(IEEFile));
+                pwACM = new PrintWriter(new FileOutputStream(ACMFile));
+                pwNJ = new PrintWriter(new FileOutputStream(NJFile));
+            } catch (FileNotFoundException e) {
+                System.out.println("ACM" + i + ".json file could not be opened/created.");
                 System.exit(0);
             }
             while (input.hasNextLine()) {
                 try {
                     String text = input.nextLine();
+                    // End of an article
                     if (text.equals("}")) {
                         String[] splitString = author.split("and");
                         for (int j = 0; j < splitString.length; j++) {
@@ -59,166 +66,198 @@ public class BibilographyFactory {
                         pwACM.println(authorACM + " et al. " + year + ". " + title + ". " + journal + ". " + volume + ", " + number + "(" + year + "), " + pages + ". DOI:https://doi.org/" + doi + ".\n");
                         pwNJ.println(". " + title + ". " + journal + ". " + volume + ", " + pages + "(" + year + ").\n");
                     }
-                    st1 = new StringTokenizer(text, "={},");
+                    // if article, continue
+                    if (text.contains("@ARTICLE{")) {
+                        continue;
+                    }
+                    text = text.replace("={", "|");
+                    st1 = new StringTokenizer(text, "|");
                     while (st1.hasMoreTokens()) {
-                        while (st1.hasMoreTokens()) {
-                            st1.nextToken();
-                            if (text.contains("author")) {
-                                try {
-                                    author = st1.nextToken().trim();
-                                    author = author.substring(0, author.length() - 2);
-                                    System.out.println(author);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"author\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        st1.nextToken();
+                        if (text.contains("author|")) {
+                            try {
+                                author = st1.nextToken().trim();
+                                author = author.substring(0, author.length() - 2);
+                                if (author.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"author\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("journal")) {
-                                try {
-                                    journal = st1.nextToken().trim();
-                                    journal = journal.substring(0, journal.length() - 2);
-                                    System.out.println(journal);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"journal\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("journal|")) {
+                            try {
+                                journal = st1.nextToken().trim();
+                                journal = journal.substring(0, journal.length() - 2);
+                                if (journal.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"journal\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("title")) {
-                                try {
-                                    title = st1.nextToken().trim();
-                                    title = title.substring(0, title.length() - 2);
-                                    System.out.println(title);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"title\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("title|")) {
+                            try {
+                                title = st1.nextToken().trim();
+                                title = title.substring(0, title.length() - 2);
+                                if (title.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"title\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("year")) {
-                                try {
-                                    year = st1.nextToken().trim();
-                                    year = year.substring(0, year.length() - 2);
-                                    System.out.println(year);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"year\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("year|")) {
+                            try {
+                                year = st1.nextToken().trim();
+                                year = year.substring(0, year.length() - 2);
+                                if (year.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"year\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("volume")) {
-                                try {
-                                    volume = st1.nextToken().trim();
-                                    volume = volume.substring(0, volume.length() - 2);
-                                    System.out.println(volume);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"volume\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("volume|")) {
+                            try {
+                                volume = st1.nextToken().trim();
+                                volume = volume.substring(0, volume.length() - 2);
+                                if (volume.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"volume\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("number")) {
-                                try {
-                                    number = st1.nextToken().trim();
-                                    number = number.substring(0, number.length() - 2);
-                                    System.out.println(number);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"number\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("number|")) {
+                            try {
+                                number = st1.nextToken().trim();
+                                number = number.substring(0, number.length() - 2);
+                                if (number.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"number\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("pages")) {
-                                try {
-                                    pages = st1.nextToken().trim();
-                                    pages = pages.substring(0, pages.length() - 2);
-                                    System.out.println(pages);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"pages\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("pages|")) {
+                            try {
+                                pages = st1.nextToken().trim();
+                                pages = pages.substring(0, pages.length() - 2);
+                                if (pages.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"pages\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("keywords")) {
-                                try {
-                                    keywords = st1.nextToken().trim();
-                                    keywords = keywords.substring(0, keywords.length() - 2);
-                                    System.out.println(keywords);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"keywords\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("keywords|")) {
+                            try {
+                                keywords = st1.nextToken().trim();
+                                keywords = keywords.substring(0, keywords.length() - 2);
+                                if (keywords.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"keywords\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("doi")) {
-                                try {
-                                    doi = st1.nextToken().trim();
-                                    doi = doi.substring(0, doi.length() - 2);
-                                    System.out.println(doi);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"doi\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("doi|")) {
+                            try {
+                                doi = st1.nextToken().trim();
+                                doi = doi.substring(0, doi.length() - 2);
+                                if (doi.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"doi\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("ISSN")) {
-                                try {
-                                    ISSN = st1.nextToken().trim();
-                                    ISSN = ISSN.substring(0, ISSN.length() - 2);
-                                    System.out.println(ISSN);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"ISSN\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("ISSN|")) {
+                            try {
+                                ISSN = st1.nextToken().trim();
+                                ISSN = ISSN.substring(0, ISSN.length() - 2);
+                                if (ISSN.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"ISSN\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
-                            if (text.contains("month")) {
-                                try {
-                                    month = st1.nextToken().trim();
-                                    month = month.substring(0, month.length() - 2);
-                                    System.out.println(month);
-                                } catch (Exception e) {
-                                    System.out.println("Error: Empty Field Detected!");
-                                    System.out.println("----------------------------");
-                                    System.out.println("\nProblem detected with input file: ");
-                                    System.out.println("File is invalid: Field \"month\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
-                                    throw new FileInvalidException();
+                        }
+                        if (text.contains("month|")) {
+                            try {
+                                month = st1.nextToken().trim();
+                                month = month.substring(0, month.length() - 2);
+                                if (month.equals("")) {
+                                    throw new NoSuchElementException();
                                 }
+                            } catch (NoSuchElementException e) {
+                                System.out.println("Error: Empty Field Detected!");
+                                System.out.println("----------------------------");
+                                System.out.println("Problem detected with input file: " + file);
+                                System.out.println("File is invalid: Field \"month\" is empty. Processing stopped at this point. Other empty fields may be present as well!\n");
+                                throw new FileInvalidException();
                             }
                         }
                     }
+
                 } catch (FileInvalidException e) {
-                    file.delete();
                     IEEFile.delete();
                     ACMFile.delete();
                     NJFile.delete();
+                    invalid = true;
+                    filecount++;
+                    break;
                 }
-                pwIEEE.close();
-                pwACM.close();
-                pwNJ.close();
             }
+            if (invalid) {
+                continue;
+            }
+            pwIEEE.close();
+            pwACM.close();
+            pwNJ.close();
         }
+        System.out.println("A total of " + filecount + " were invalid, and could not be processed. All other " + (10 - filecount) + " \"Valid\" files have been created.");
     }
 
     public static void main(String[] args) {
@@ -270,6 +309,8 @@ public class BibilographyFactory {
                 System.exit(0);
             }
         }
-    }
+        processFilesForValidation();
+    } // eoFor
 }
+
 
