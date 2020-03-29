@@ -257,7 +257,7 @@ public class BibilographyFactory {
             pwACM.close();
             pwNJ.close();
         }
-        System.out.println("A total of " + filecount + " were invalid, and could not be processed. All other " + (10 - filecount) + " \"Valid\" files have been created.");
+        System.out.println("A total of " + filecount + " files were invalid, and could not be processed. All other " + (10 - filecount) + " \"Valid\" files have been created.");
     }
 
     public static void main(String[] args) {
@@ -308,9 +308,35 @@ public class BibilographyFactory {
                 outputFiles.delete(); //Deleting directory
                 System.exit(0);
             }
-        }
+        } //eoFor
         processFilesForValidation();
-    } // eoFor
+
+        //Prompting user
+        Scanner userInput = new Scanner(System.in);
+        int invalidCount = 0;
+        boolean valid = false;
+        while (!valid) {
+            System.out.println("\nPlease enter the name of one of the files that you need to review: ");
+            String fileName = userInput.nextLine();
+            try {
+                BufferedReader reader = new BufferedReader(new FileReader("Assignment 3/Output Files/" + fileName));
+                System.out.println("Here are the contents of the successfully created Jason File: " + fileName);
+                valid = true;
+            } catch (FileNotFoundException e) {
+                invalidCount++;
+                System.out.println("Could not open input file. File does not exist; it could possibly not be created!");
+                if (invalidCount == 2) {
+                    System.out.println("Unfortunately, this was your last chance! Program will now terminate!");
+                    System.exit(0);
+
+                } else {
+                    System.out.println("However, you will be allowed another chance to enter file name.");
+                    valid = false;
+                }
+            }
+        }
+
+    }
 }
 
 
