@@ -1,9 +1,22 @@
+// -----------------------------------------------------
+// Assignment 3
+// Question: Task 3-7
+// Written by: Chelsie Ng Man King ID: 40071692
+// -----------------------------------------------------
+
 import java.io.*;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
+/**
+ * @author Chelsie Ng - 40071692
+ * BibilographyFactory Class which reads and processes a given .bib file (which has one or more articles) and creates 3 different files with the correct reference formats for IEEE, ACM and NJ.
+ */
 public class BibilographyFactory {
+    /**
+     * processFilesForValidation method processing the input files and creating the output ones
+     */
     public static void processFilesForValidation() {
         String author = "";
         String authorIEEE = ""; //author in IEEE format

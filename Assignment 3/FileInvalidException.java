@@ -1,3 +1,8 @@
+// -----------------------------------------------------
+// Assignment 3
+// Question: Task 2
+// Written by: Chelsie Ng Man King ID: 40071692
+// -----------------------------------------------------
 /**
  * @author Chelsie Ng - 40071692
  * FileInvalidException Class which throws exception when file is invalid
