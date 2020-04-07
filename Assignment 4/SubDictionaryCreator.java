@@ -1,16 +1,22 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SubDictionaryCreator {
     public static void main(String[] args) {
         String word = "";
-        int characterCode = 0;
+        String filename = "";
+        Scanner keyboard = new Scanner(System.in);
+        System.out.println("Welcome to Chelsie's Sub-Dictionary Creator! \n\nPlease enter the name of the input file: ");
+        filename = keyboard.nextLine();
         ArrayList<String> list = new ArrayList<String>();
         ArrayList<String> noDuplicateList = new ArrayList<String>();
         try {
-            Scanner reader = new Scanner(new FileInputStream("Assignment 4/PersonOfTheCentury.txt"));
+            Scanner reader = new Scanner(new FileInputStream("Assignment 4/" + filename));
+            PrintWriter writer = new PrintWriter(new FileOutputStream("Assignment 4/SubDictionary.txt"));
             // Reading input file word by word
             while (reader.hasNext()) {
                 word = reader.next();
@@ -40,8 +46,26 @@ public class SubDictionaryCreator {
                     noDuplicateList.add(element);
                 }
             }
+            writer.println("The document produced this sub-dictionary, which includes " + noDuplicateList.size() + " entries."); //Writing in output file
+            noDuplicateList.sort(null); // sorting list in alphabetical order
+            int letter = 64;
+            for (String element : noDuplicateList) {
+                if (element.equals("")) {
+                    continue;
+                }
+                if (element.charAt(0) > letter) {
+                    letter = element.charAt(0);
+                    writer.println();
+                    writer.println((char) letter); //Writing respective letter as separator
+                    writer.println("==");
+                }
+                writer.println(element);
+            }
+            reader.close();
+            writer.close();
+            System.out.println("SubDictionary.txt has been successfully created!\n\nThank you for using Chelsie's Sub-Dictionary Creator!");
         } catch (FileNotFoundException e) {
-            System.out.println("Error! File could not be opened/created! Program will terminate now!");
+            System.out.println("Error! File could not be found! Program will terminate now!");
             System.exit(-1);
         }
     }
