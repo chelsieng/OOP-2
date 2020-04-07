@@ -18,6 +18,10 @@ public class SubDictionaryCreator {
                     }
                     word = word.substring(0, word.length() - 1); // removing punctuation
                 }
+                // Skipping digits
+                if (word.contains("0") || word.contains("1") || word.contains("2") || word.contains("3") || word.contains("4") || word.contains("5") || word.contains("6") || word.contains("7") || word.contains("8") || word.contains("9")) {
+                    continue;
+                }
                 System.out.println(word);
             }
 
