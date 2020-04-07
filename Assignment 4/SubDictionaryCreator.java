@@ -1,11 +1,14 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SubDictionaryCreator {
     public static void main(String[] args) {
         String word = "";
         int characterCode = 0;
+        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> noDuplicateList = new ArrayList<String>();
         try {
             Scanner reader = new Scanner(new FileInputStream("Assignment 4/PersonOfTheCentury.txt"));
             // Reading input file word by word
@@ -27,7 +30,15 @@ public class SubDictionaryCreator {
                 if (word.length() == 1 && !((word.equals("a")) || word.equals("A") || word.equals("i") || word.equals("I"))) {
                     continue;
                 }
-                System.out.println(word);
+                word = word.toUpperCase(); //converting all words to upper case
+                list.add(word); // adding all words in array list
+            }
+            list.remove((char) 32); // Removing space character
+            // Removing all duplicates
+            for (String element : list) {
+                if (!noDuplicateList.contains(element)) {
+                    noDuplicateList.add(element);
+                }
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error! File could not be opened/created! Program will terminate now!");
