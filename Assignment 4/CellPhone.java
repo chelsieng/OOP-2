@@ -70,7 +70,7 @@ public class CellPhone {
     }
 
     public String toString() {
-        return "Serial Number: " + serialNum + "\nBrand: " + brand + "\nManufacturing year: " + year + "\nPrice: $" + price + "0";
+        return "[" + serialNum + ": " + brand + " " + price + "$ " + year + "]";
     }
 
     public boolean equals(Object object) {
