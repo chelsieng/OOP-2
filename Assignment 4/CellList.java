@@ -22,13 +22,14 @@ public class CellList {
             cn3 = null;
             while (cn1 != null) {
                 if (head == null) {
-                    cn2 = new CellNode(cn1);
+                    cn2 = new CellNode(cn1); //using copy constructor of CellNode
                     head = cn2;
                 } else {
-                    cn3 = new CellNode(cn1);
+                    cn3 = cn1.clone(); //using clone method of CellNode
                     cn2.next = cn3;
                     cn2 = cn3;
                 }
+                size++;
                 cn1 = cn1.next;
             }
             cn2 = null;
@@ -38,7 +39,9 @@ public class CellList {
 
     //Adding node to start
     public void addToStart(CellPhone cellPhone) {
-        CellNode newHead = new CellNode(cellPhone, head);
+        CellNode newHead = new CellNode(); //using default constructor
+        newHead.cellPhone = cellPhone;
+        newHead.next = head;
         head = newHead;
         size++;
     }
@@ -46,25 +49,24 @@ public class CellList {
     //Adding node at specific index
     public void insertAtIndex(CellPhone cellPhone, int index) {
         try {
-            // index is invalid
-            if (index >= 0 && index <= size - 1) {
-                throw new NoSuchElementException();
-            }
-            // index is valid
             // list is empty
             if (head == null) {
                 //if head is null and position is zero then exit.
-                if (index != 0) {
-                    return;
-                } else { //node set to the head.
+                if (index == 0) { //node set to the head.
                     head = new CellNode(cellPhone, null);
                     size++;
-                    return;
                 }
+                return;
             }
+            // index is invalid
+            if (index >= size) {
+                throw new NoSuchElementException();
+            }
+            // index is valid
             if (head != null && index == 0) {
                 CellNode newNode = new CellNode(cellPhone, head);
                 head = newNode;
+                size++;
                 return;
             }
             CellNode current = head; // temp pointer
@@ -79,6 +81,7 @@ public class CellList {
             }
             CellNode newNode = new CellNode(cellPhone, current);
             previous.next = newNode;
+            size++;
         } catch (NoSuchElementException e) {
             System.out.println("Invalid Index. Program will now terminate!");
             System.exit(-1);
@@ -88,28 +91,30 @@ public class CellList {
 
     public void deleteFromIndex(int index) {
         try {
-            // index is invalid
-            if (index >= 0 && index <= size - 1) {
-                throw new NoSuchElementException();
-            }
-            // index is valid
             // list is empty
             if (head == null) {
                 //if head is null, exit.
                 return;
             }
+            // index is invalid
+            if (index >= size) {
+                throw new NoSuchElementException();
+            }
+            // index is valid
             if (head != null && index == 0) {
                 head = head.next;
+                size--;
                 return;
             }
             CellNode current = head; // temp pointer
-            for (int i = 0; i < index; i++) {
+            for (int i = 0; i < index - 1; i++) {
                 if (current == null || current.next == null) {
                     break;
                 }
                 current = current.next;
             }
             current.next = current.next.next;
+            size--;
         } catch (NoSuchElementException e) {
             System.out.println("Invalid Index. Program will now terminate!");
             System.exit(-1);
@@ -121,22 +126,23 @@ public class CellList {
             return;
         }
         head = head.next;
+        size--;
     }
 
     public void replaceAtIndex(CellPhone cellPhone, int index) {
-        //invalid index
-        if (index >= 0 && index <= size - 1) {
-            return;
-        }
-        //valid index
-        // index is valid
         // list is empty
         if (head == null) {
             return;
         }
+        //invalid index
+        if (index >= size) {
+            return;
+        }
+        // index is valid
         if (head != null && index == 0) {
             CellNode newNode = new CellNode(cellPhone, head);
             head = newNode;
+            size++;
             deleteFromIndex(index + 1);
             return;
         }
@@ -152,21 +158,27 @@ public class CellList {
         }
         CellNode newNode = new CellNode(cellPhone, current);
         previous.next = newNode;
+        size++;
         deleteFromIndex(index + 1);
     }
 
+    //Privacy leak
     public CellNode find(long serialNum) {
         if (head == null) {
             return null;
         }
         CellNode current = head;
-        int i = 0;
+        int i = 1;
         while (current.next != null) {
-            current = current.next;
             if (current.cellPhone.getSerialNum() == serialNum) {
-                System.out.printf("Found after " + i + " iterations.");
+                if (i == 1) {
+                    System.out.println("Found after " + i + " iteration.");
+                } else {
+                    System.out.println("Found after " + i + " iterations.");
+                }
                 return current;
             }
+            current = current.next;
             i++;
         }
         System.out.println("Not found after " + i + " iterations.");
@@ -186,22 +198,23 @@ public class CellList {
             }
             i++;
         }
-        return true;
+        return false;
     }
 
     public void showContents() {
         if (head == null) {
             System.out.println("There is no content to the list.");
+            return;
         }
         CellNode current = head;
         CellNode previous = null;
         System.out.println("The current size of the list is " + size + ". Here are the contents of the list");
-        System.out.println("===============================================================================");
+        System.out.println("=====================================================================");
         while (current.next != null) {
-            System.out.println(current.cellPhone.toString() + " ---> ");
+            System.out.print(current.cellPhone.toString() + " ---> ");
             current = current.next;
         }
-        System.out.println("X");
+        System.out.println(current.cellPhone.toString() + " ---> X");
     }
 
     public boolean equals(CellList cellList) {
@@ -221,7 +234,7 @@ public class CellList {
     }
 
     //Inner Class
-    public class CellNode {
+    public static class CellNode {
         private CellPhone cellPhone;
         private CellNode next;
 

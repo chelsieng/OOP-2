@@ -6,13 +6,6 @@ public class CellPhone {
     private int year;
     private double price;
 
-    public CellPhone() {
-        serialNum = 0;
-        brand = "";
-        year = 0;
-        price = 0.0;
-    }
-
     public CellPhone(long serialNum, String brand, int year, double price) {
         this.serialNum = serialNum;
         this.brand = brand;
