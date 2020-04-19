@@ -1,3 +1,9 @@
+// -----------------------------------------------------
+// Assignment 4
+// Question: part 1
+// Written by: Chelsie Ng Man King ID: 40071692
+// -----------------------------------------------------
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -5,11 +11,21 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * @author Chelsie Ng - 40071692
+ * SubDictionaryCreator Class that accepts any text file, as input, and creates a sub-dictionary that includes all the words found in that file based on some rules
+ */
 public class SubDictionaryCreator {
+    /**
+     * This is the main method that will run the program
+     *
+     * @param args unused
+     */
     public static void main(String[] args) {
         String word = "";
         String filename = "";
         Scanner keyboard = new Scanner(System.in);
+        //Welcome message
         System.out.println("Welcome to Chelsie's Sub-Dictionary Creator! \n\nPlease enter the name of the input file: ");
         filename = keyboard.nextLine();
         ArrayList<String> list = new ArrayList<String>();
@@ -59,7 +75,7 @@ public class SubDictionaryCreator {
                     writer.println((char) letter); //Writing respective letter as separator
                     writer.println("==");
                 }
-                writer.println(element);
+                writer.println(element); //Writing in output file
             }
             reader.close();
             writer.close();

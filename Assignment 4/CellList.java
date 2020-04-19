@@ -1,16 +1,32 @@
+// -----------------------------------------------------
+// Assignment 4
+// Question: part 2 - III
+// Written by: Chelsie Ng Man King ID: 40071692
+// -----------------------------------------------------
+
 import java.util.NoSuchElementException;
 
+/**
+ * @author Chelsie Ng - 40071692
+ * CellList Class to store head and size
+ */
 public class CellList {
     private CellNode head;
     private int size;
 
-    //Default constructor -  empty list
+    /**
+     * This is a default constructor
+     */
     public CellList() {
         head = null;
         size = 0;
     }
 
-    //Copy contructor
+    /**
+     * This is a copy constructor
+     *
+     * @param cellList stores the other list being copied
+     */
     public CellList(CellList cellList) {
         if (cellList.head == null) {
             head = null;
@@ -37,7 +53,11 @@ public class CellList {
         }
     }
 
-    //Adding node to start
+    /**
+     * addToStart Method
+     *
+     * @param cellPhone stores the cellphone being added to the beginning of the list
+     */
     public void addToStart(CellPhone cellPhone) {
         CellNode newHead = new CellNode(); //using default constructor
         newHead.cellPhone = cellPhone;
@@ -46,7 +66,12 @@ public class CellList {
         size++;
     }
 
-    //Adding node at specific index
+    /**
+     * insertAtIndex Method
+     *
+     * @param cellPhone stores the cellphone to be inserted
+     * @param index     represents the position where to be inserted
+     */
     public void insertAtIndex(CellPhone cellPhone, int index) {
         try {
             // list is empty
@@ -89,6 +114,11 @@ public class CellList {
 
     }
 
+    /**
+     * deleteFromIndex Method
+     *
+     * @param index represents the position where to be deleted
+     */
     public void deleteFromIndex(int index) {
         try {
             // list is empty
@@ -121,6 +151,10 @@ public class CellList {
         }
     }
 
+    /**
+     * deleteFromStart Method
+     * deletes at the beginning of the list
+     */
     public void deleteFromStart() {
         if (head == null) {
             return;
@@ -129,6 +163,12 @@ public class CellList {
         size--;
     }
 
+    /**
+     * replaceAtIndex Method
+     *
+     * @param cellPhone stores cellphone to be replaced with
+     * @param index     represents position where to be replaced
+     */
     public void replaceAtIndex(CellPhone cellPhone, int index) {
         // list is empty
         if (head == null) {
@@ -162,7 +202,12 @@ public class CellList {
         deleteFromIndex(index + 1);
     }
 
-    //Privacy leak
+    /**
+     * find Method
+     *
+     * @param serialNum stores serial number to find
+     * @return a reference of object found with that serial number
+     */
     public CellNode find(long serialNum) {
         if (head == null) {
             return null;
@@ -185,6 +230,12 @@ public class CellList {
         return null;
     }
 
+    /**
+     * contains Method
+     *
+     * @param serialNum stores serial number to verify in list
+     * @return true if list contains serial number given
+     */
     public boolean contains(long serialNum) {
         if (head == null) {
             return false;
@@ -201,6 +252,10 @@ public class CellList {
         return false;
     }
 
+    /**
+     * showContents Method
+     * this displays all contents of the list
+     */
     public void showContents() {
         if (head == null) {
             System.out.println("There is no content to the list.");
@@ -217,6 +272,12 @@ public class CellList {
         System.out.println(current.cellPhone.toString() + " ---> X");
     }
 
+    /**
+     * equals Method
+     *
+     * @param cellList stores the list being compared
+     * @return true if both lists contain same cellphones
+     */
     public boolean equals(CellList cellList) {
         if (cellList.head == null || this.head == null) {
             return false;
@@ -233,46 +294,84 @@ public class CellList {
         return true;
     }
 
-    //Inner Class
-    public static class CellNode {
+    /**
+     * CellNode Class to store cellphone and next
+     */
+    public class CellNode {
         private CellPhone cellPhone;
         private CellNode next;
 
-        //Default Constructor
+        /**
+         * This is a default constructor
+         */
         public CellNode() {
             cellPhone = null;
             next = null;
         }
 
-        //Parameterized constructor
+        /**
+         * This is a constructor to initialize a CellNode object
+         *
+         * @param cellPhone initial cellphone
+         * @param next      initial next
+         */
         public CellNode(CellPhone cellPhone, CellNode next) {
             this.cellPhone = cellPhone;
             this.next = next;
         }
 
-        //Copy constructor
+        /**
+         * This is a copy constructor
+         *
+         * @param cellNode stores the other cellNode being copied
+         */
         public CellNode(CellNode cellNode) {
             cellPhone = cellNode.cellPhone.clone();
             next = cellNode.next;
         }
 
+        /**
+         * clone Method
+         *
+         * @return a deep copy of cellNode
+         */
         public CellNode clone() {
             return new CellNode(this);
         }
 
+        /**
+         * get cellphone of the CellNode
+         *
+         * @return cellphone of the CellNode
+         */
         public CellPhone getCellPhone() {
             return cellPhone;
         }
 
 
+        /**
+         * get next of the CellNode
+         *
+         * @return next of the CellNode
+         */
         public CellNode getNext() {
             return next;
         }
 
+        /**
+         * set cellphone of the CellNode
+         *
+         * @param cellPhone new cellphone of the CellNode
+         */
         public void setCellPhone(CellPhone cellPhone) {
             this.cellPhone = cellPhone;
         }
 
+        /**
+         * set next of the CellNode
+         *
+         * @param next new next of the CellNode
+         */
         public void setNext(CellNode next) {
             this.next = next;
         }
