@@ -1,9 +1,3 @@
-// -----------------------------------------------------
-// Assignment 4
-// Question: part 1
-// Written by: Chelsie Ng Man King ID: 40071692
-// -----------------------------------------------------
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
